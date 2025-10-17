@@ -4,3 +4,5 @@ x64/
 .git/
 db/
 db/*
+out/
+build/
