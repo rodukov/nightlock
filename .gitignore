@@ -1,0 +1,6 @@
+kernel/
+x64/
+.vs/
+.git/
+db/
+db/*
