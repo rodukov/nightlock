@@ -16,10 +16,12 @@ void Manager::init() {
 
     if (!file.good()) {
         print(L"[?] main.json not found", L"white", L"bold", L"red");
+        std::wcout << std::endl;
         save();
     }
     else {
         print(L"[+] loading main.json", L"white", L"bold", L"blue");
+        std::wcout << std::endl;
         load();
     }
 }
@@ -105,6 +107,7 @@ void Manager::save() {
     std::ofstream file("db/main.json", std::ios::binary);
     if (!file.is_open()) {
         print(L"[ ERROR ] cannot open db/main.json", L"white", L"bold", L"red");
+        std::wcout << std::endl;
         return;
     }
 
@@ -112,6 +115,7 @@ void Manager::save() {
     file.close();
 
     print(L"[ KERNEL ] dumped", L"white", L"bold", L"blue");
+    std::wcout << std::endl;
 }
 
 // ---------- загрузка ----------
@@ -119,6 +123,7 @@ void Manager::load() {
     std::ifstream file("db/main.json", std::ios::binary);
     if (!file.good()) {
         print(L"[ KERNEL ] main.json not found", L"white", L"bold", L"red");
+        std::wcout << std::endl;
         return;
     }
 
@@ -128,6 +133,7 @@ void Manager::load() {
     }
     catch (...) {
         print(L"[ ERROR ] failed to parse db/main.json", L"white", L"bold", L"red");
+        std::wcout << std::endl;
         return;
     }
     file.close();
@@ -194,4 +200,5 @@ void Manager::load() {
     }
 
     print(L"[ KERNEL ] main.json loaded", L"white", L"bold", L"blue");
+    std::wcout << std::endl;
 }
