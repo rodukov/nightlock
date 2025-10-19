@@ -12,15 +12,15 @@ include_directories(
 )
 
 # Механизм для скачивания сторонних библиотек
-include(FetchContent)
+#include(FetchContent)
 
 # Подключаем FTXUI
-FetchContent_Declare(
-  ftxui
-  GIT_REPOSITORY https://github.com/ArthurSonzogni/FTXUI.git
-  GIT_TAG v5.0.0
-)
-FetchContent_MakeAvailable(ftxui)
+#FetchContent_Declare(
+#  ftxui
+#  GIT_REPOSITORY https://github.com/ArthurSonzogni/FTXUI.git
+#  GIT_TAG v5.0.0
+#)
+#FetchContent_MakeAvailable(ftxui)
 
 # Создаём исполняемый файл Nightlock с исходниками из src/
 add_executable(Nightlock
@@ -33,4 +33,4 @@ add_executable(Nightlock
 )
 
 # Линкуем FTXUI
-target_link_libraries(Nightlock PRIVATE ftxui::screen ftxui::dom ftxui::component)
+#target_link_libraries(Nightlock PRIVATE ftxui::screen ftxui::dom ftxui::component)
