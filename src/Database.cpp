@@ -8,20 +8,29 @@
 #include <codecvt>
 #include "json.hpp"
 #include "formatkit.h"
-
+#include "Crypt.h"
 using json = nlohmann::json;
 
 void Manager::init() {
-    std::ifstream file("db/main.json");
+
+    //std::string password = "supersecret";
+    //encrypt_file("data.json", "data.enc", password);
+    //decrypt_file("data.enc", "data_decrypted.json", password);
+
+    std::ifstream file("db/data.enc");
 
     if (!file.good()) {
-        print(L"[?] main.json not found", L"white", L"bold", L"red");
+        print(L"[   ERROR   ]", L"red", L"bold");
+        std::wcout << L" -> ";
+        std::wcout << L"No Database Found, Initializating..." << std::endl;
+        std::wcout << std::endl;
         std::wcout << std::endl;
         save();
     }
     else {
-        print(L"[+] loading main.json", L"white", L"bold", L"blue");
-        std::wcout << std::endl;
+        print(L"[   OK   ]", L"yellow", L"bold");
+        std::wcout << L" -> ";
+        std::wcout << L"Selected Database" << std::endl;
         load();
     }
 }
@@ -114,12 +123,21 @@ void Manager::save() {
     file << j.dump(4);
     file.close();
 
+    std::wcout << L"Enter master-password > ";
+    std::string mpsswd;
+    std::cin >> mpsswd;
+    encrypt_file("db/main.json", "db/data.enc", mpsswd);
+
     print(L"[ KERNEL ] dumped", L"white", L"bold", L"blue");
     std::wcout << std::endl;
 }
 
 // ---------- загрузка ----------
 void Manager::load() {
+    std::wcout << L"Enter master-password > ";
+    std::string mpsswd;
+    std::cin >> mpsswd;
+    decrypt_file("db/data.enc", "db/main.json", mpsswd);
     std::ifstream file("db/main.json", std::ios::binary);
     if (!file.good()) {
         print(L"[ KERNEL ] main.json not found", L"white", L"bold", L"red");
@@ -199,6 +217,8 @@ void Manager::load() {
         }
     }
 
-    print(L"[ KERNEL ] main.json loaded", L"white", L"bold", L"blue");
+    print(L"[   OK   ]", L"yellow", L"bold");
+    std::wcout << L" -> ";
+    std::wcout << L"Database MemoryRead" << std::endl;
     std::wcout << std::endl;
 }

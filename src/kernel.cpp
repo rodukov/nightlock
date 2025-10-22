@@ -3,6 +3,8 @@
 #include "livecmd.h"
 
 #include "json.hpp"
+#include <openssl/evp.h>
+#include <iostream>
 
 #include <iostream>
 #include <windows.h>
@@ -29,8 +31,9 @@ int main() {
         }
     #endif
 
-    print(L"Менеджер паролей alpha-0.1\n", L"white", L"bold", L"blue");
-
+    print(L"[   OK   ]", L"yellow", L"bold");
+    std::wcout << L" -> Included ";
+    std::wcout << OpenSSL_version(OPENSSL_VERSION) << std::endl;
     Manager manager;
     manager.init();
     livecmd shell(&manager); // manager address

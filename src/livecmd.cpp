@@ -57,6 +57,7 @@ void livecmd::run() {
     std::wcout.imbue(std::locale()); */
 
     std::wstring input;
+    print(L"Менеджер паролей alpha-0.1\n", L"white", L"bold", L"blue");
     print(L"Выполнен вход в livecmd. Введите help для списка команд.\n\n", L"white");
     SetConsoleTitleW(L"nightlock livecmd");
     while (true) {
