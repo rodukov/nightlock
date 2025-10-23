@@ -1,8 +1,8 @@
-#include "Manager.h"
+п»ї#include "Manager.h"
 #include "readsecret.h"
 
-#include <sys/stat.h>  // для mkdir (создание папки)
-#include <direct.h>    // для _mkdir на Windows
+#include <sys/stat.h>  // РґР»СЏ mkdir (СЃРѕР·РґР°РЅРёРµ РїР°РїРєРё)
+#include <direct.h>    // РґР»СЏ _mkdir РЅР° Windows
 #include <fstream>
 #include <filesystem>
 #include <functional>
@@ -10,27 +10,23 @@
 #include "json.hpp"
 #include "formatkit.h"
 #include "Crypt.h"
+#include "livecmd/alert.h"
+
 using json = nlohmann::json;
 
 void Manager::init() {
     std::ifstream file("db/primary.nightlock");
 
     if (!file.good()) {
-        print(L"[  FAIL  ]", L"red", L"bold");
-        std::wcout << L" -> ";
-        std::wcout << L"No Database Found, Initializating..." << std::endl;
-        std::wcout << std::endl;
-        std::wcout << std::endl;
+        alert::db::notfound();
         save();
     }
     else {
-        print(L"[   OK   ]", L"yellow", L"bold");
-        std::wcout << L" -> ";
-        std::wcout << L"Selected Database" << std::endl;
+        alert::db::found();
         load();
     }
 }
-// ---------- утилиты конверсии ----------
+// ---------- СѓС‚РёР»РёС‚С‹ РєРѕРЅРІРµСЂСЃРёРё ----------
 static inline std::string wstring_to_utf8(const std::wstring& wstr) {
     std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
     return conv.to_bytes(wstr);
@@ -41,7 +37,19 @@ static inline std::wstring utf8_to_wstring(const std::string& str) {
     return conv.from_bytes(str);
 }
 
-// ---------- сохранение ----------
+// --- wstring в†’ string ---
+std::string wstring_to_string(const std::wstring& wstr) {
+    std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
+    return conv.to_bytes(wstr);
+}
+
+// --- string в†’ wstring ---
+std::wstring string_to_wstring(const std::string& str) {
+    std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
+    return conv.from_bytes(str);
+}
+
+// ---------- СЃРѕС…СЂР°РЅРµРЅРёРµ ----------
 void Manager::save() {
     json j;
     j["rootEntries"] = json::array();
@@ -66,7 +74,7 @@ void Manager::save() {
         j["rootEntries"].push_back(entry);
     }
 
-    // рекурсивная лямбда для групп
+    // СЂРµРєСѓСЂСЃРёРІРЅР°СЏ Р»СЏРјР±РґР° РґР»СЏ РіСЂСѓРїРї
     std::function<json(const Group&)> group_to_json;
     group_to_json = [&](const Group& g) -> json {
         json gj;
@@ -102,7 +110,7 @@ void Manager::save() {
         j["rootGroups"].push_back(group_to_json(g));
     }
 
-    // создаём папку db вручную
+    // СЃРѕР·РґР°С‘Рј РїР°РїРєСѓ db РІСЂСѓС‡РЅСѓСЋ
 #ifdef _WIN32
     _mkdir("db");
 #else
@@ -111,35 +119,29 @@ void Manager::save() {
 
     std::ofstream file("db/primary.nightlock1", std::ios::binary);
     if (!file.is_open()) {
-        print(L"[ ERROR ] cannot open db/primary.nightlock1", L"white", L"bold", L"red");
-        std::wcout << std::endl;
+        alert::db::not_open();
         return;
     }
 
     file << j.dump(4);
     file.close();
 
-    print(L"[DATABASE]", L"bright_cyan", L"bold");
-    print(L" -> Create master-password > ", L"white", L"bold");
-    std::string mpsswd;
-    std::wstring passwd = readsecret();
-    encrypt_file("db/primary.nightlock1", "db/primary.nightlock", mpsswd);
+    alert::db::createmaster();
+    encrypt_file("db/primary.nightlock1", "db/primary.nightlock", wstring_to_string(readsecret()));
 
-    print(L"[ KERNEL ] dumped", L"white", L"bold", L"blue");
-    std::wcout << std::endl;
+    alert::db::save();
 }
 
-// ---------- загрузка ----------
+// ---------- Р·Р°РіСЂСѓР·РєР° ----------
 void Manager::load() {
-    print(L"[DATABASE]", L"bright_cyan", L"bold");
-    print(L" -> Enter master-password > ", L"white", L"bold");
-    std::string mpsswd;
-    std::wstring passwd = readsecret();
-    decrypt_file("db/primary.nightlock", "db/primary.nightlock1", mpsswd);
+
+    alert::db::readmaster();
+    decrypt_file("db/primary.nightlock", "db/primary.nightlock1", wstring_to_string(readsecret()));
+
     std::ifstream file("db/primary.nightlock1", std::ios::binary);
     if (!file.good()) {
-        print(L"[ KERNEL ] primary.nightlock1 not found", L"white", L"bold", L"red");
-        std::wcout << std::endl;
+        alert::db::incorrectmaster();
+        exit(0);
         return;
     }
 
@@ -148,8 +150,9 @@ void Manager::load() {
         file >> j;
     }
     catch (...) {
-        print(L"[ ERROR ] failed to parse db/primary.nightlock1", L"white", L"bold", L"red");
-        std::wcout << std::endl;
+        alert::db::incorrectmaster();
+        alert::db::incorrectmaster();
+        exit(0);
         return;
     }
     file.close();
@@ -177,7 +180,7 @@ void Manager::load() {
         }
     }
 
-    // рекурсивная загрузка групп
+    // СЂРµРєСѓСЂСЃРёРІРЅР°СЏ Р·Р°РіСЂСѓР·РєР° РіСЂСѓРїРї
     std::function<Group(const json&)> json_to_group;
     json_to_group = [&](const json& gj) -> Group {
         Group g;
@@ -215,14 +218,11 @@ void Manager::load() {
         }
     }
 
-    print(L"[   OK   ]", L"yellow", L"bold");
-    std::wcout << L" -> ";
-    std::wcout << L"Database MemoryRead" << std::endl;
-    std::wcout << std::endl;
+    alert::db::load();
 }
 
 void Manager::close() {
     if (std::remove("db/primary.nightlock1") == 0) {
-        print(L"Database closed", L"white", L"bold", L"blue");
+        alert::db::close();
     }
 }

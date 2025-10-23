@@ -90,7 +90,6 @@ void livecmd::help() {
 
 void livecmd::logout() {
     manager->close();
-    std::wcout << L"Выход...\n";
     exit(0);
 }
 
