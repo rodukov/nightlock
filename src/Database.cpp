@@ -17,7 +17,7 @@ void Manager::init() {
     //encrypt_file("data.json", "data.enc", password);
     //decrypt_file("data.enc", "data_decrypted.json", password);
 
-    std::ifstream file("db/data.enc");
+    std::ifstream file("db/primary.nightlock");
 
     if (!file.good()) {
         print(L"[   ERROR   ]", L"red", L"bold");
@@ -113,9 +113,9 @@ void Manager::save() {
     mkdir("db", 0777);
 #endif
 
-    std::ofstream file("db/main.json", std::ios::binary);
+    std::ofstream file("db/primary.nightlock1", std::ios::binary);
     if (!file.is_open()) {
-        print(L"[ ERROR ] cannot open db/main.json", L"white", L"bold", L"red");
+        print(L"[ ERROR ] cannot open db/primary.nightlock1", L"white", L"bold", L"red");
         std::wcout << std::endl;
         return;
     }
@@ -126,7 +126,7 @@ void Manager::save() {
     std::wcout << L"Enter master-password > ";
     std::string mpsswd;
     std::cin >> mpsswd;
-    encrypt_file("db/main.json", "db/data.enc", mpsswd);
+    encrypt_file("db/primary.nightlock1", "db/primary.nightlock", mpsswd);
 
     print(L"[ KERNEL ] dumped", L"white", L"bold", L"blue");
     std::wcout << std::endl;
@@ -137,10 +137,10 @@ void Manager::load() {
     std::wcout << L"Enter master-password > ";
     std::string mpsswd;
     std::cin >> mpsswd;
-    decrypt_file("db/data.enc", "db/main.json", mpsswd);
-    std::ifstream file("db/main.json", std::ios::binary);
+    decrypt_file("db/primary.nightlock", "db/primary.nightlock1", mpsswd);
+    std::ifstream file("db/primary.nightlock1", std::ios::binary);
     if (!file.good()) {
-        print(L"[ KERNEL ] main.json not found", L"white", L"bold", L"red");
+        print(L"[ KERNEL ] primary.nightlock1 not found", L"white", L"bold", L"red");
         std::wcout << std::endl;
         return;
     }
@@ -150,7 +150,7 @@ void Manager::load() {
         file >> j;
     }
     catch (...) {
-        print(L"[ ERROR ] failed to parse db/main.json", L"white", L"bold", L"red");
+        print(L"[ ERROR ] failed to parse db/primary.nightlock1", L"white", L"bold", L"red");
         std::wcout << std::endl;
         return;
     }
@@ -224,7 +224,7 @@ void Manager::load() {
 }
 
 void Manager::close() {
-    if (std::remove("db/main.json") == 0) {
+    if (std::remove("db/primary.nightlock1") == 0) {
         print(L"Database closed", L"white", L"bold", L"blue");
     }
 }
