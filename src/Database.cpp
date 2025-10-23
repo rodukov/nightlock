@@ -1,4 +1,5 @@
 #include "Manager.h"
+#include "readsecret.h"
 
 #include <sys/stat.h>  // для mkdir (создание папки)
 #include <direct.h>    // для _mkdir на Windows
@@ -12,11 +13,6 @@
 using json = nlohmann::json;
 
 void Manager::init() {
-
-    //std::string password = "supersecret";
-    //encrypt_file("data.json", "data.enc", password);
-    //decrypt_file("data.enc", "data_decrypted.json", password);
-
     std::ifstream file("db/primary.nightlock");
 
     if (!file.good()) {
@@ -125,7 +121,7 @@ void Manager::save() {
 
     std::wcout << L"Enter master-password > ";
     std::string mpsswd;
-    std::cin >> mpsswd;
+    std::wstring passwd = readsecret();
     encrypt_file("db/primary.nightlock1", "db/primary.nightlock", mpsswd);
 
     print(L"[ KERNEL ] dumped", L"white", L"bold", L"blue");
@@ -136,7 +132,7 @@ void Manager::save() {
 void Manager::load() {
     std::wcout << L"Enter master-password > ";
     std::string mpsswd;
-    std::cin >> mpsswd;
+    std::wstring passwd = readsecret();
     decrypt_file("db/primary.nightlock", "db/primary.nightlock1", mpsswd);
     std::ifstream file("db/primary.nightlock1", std::ios::binary);
     if (!file.good()) {
