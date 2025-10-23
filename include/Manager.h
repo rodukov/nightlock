@@ -14,6 +14,7 @@ public:
 	void init();
 	void save();
 	void load();
+	void close();
 	/* Root Directory Methods */
 	void addRootEntry(
 		const std::wstring& NAME,

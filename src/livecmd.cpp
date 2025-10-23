@@ -51,23 +51,14 @@ livecmd::livecmd(Manager* manager) : manager(manager)
 }
 
 void livecmd::run() {
-    /* global encoding setting
-    std::locale::global(std::locale(""));
-    std::wcin.imbue(std::locale());
-    std::wcout.imbue(std::locale()); */
-
     std::wstring input;
     print(L"Менеджер паролей alpha-0.1\n", L"white", L"bold", L"blue");
     print(L"Выполнен вход в livecmd. Введите help для списка команд.\n\n", L"white");
     SetConsoleTitleW(L"nightlock livecmd");
     while (true) {
         std::wcout << L"root/ > ";
-
-        // EOF check
-        if (!std::getline(std::wcin, input)) break;
-
-        // lowercase transform
-        std::transform(input.begin(), input.end(), input.begin(), ::towlower);
+        if (!std::getline(std::wcin, input)) break; /* EOF check */
+        std::transform(input.begin(), input.end(), input.begin(), ::towlower); /* lowercase transform */
 
         auto it = commands.find(input);
         if (it != commands.end()) it->second();
@@ -97,6 +88,7 @@ void livecmd::help() {
 }
 
 void livecmd::logout() {
+    manager->close();
     std::wcout << L"Выход...\n";
     exit(0);
 }

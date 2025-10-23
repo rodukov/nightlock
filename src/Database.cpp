@@ -222,3 +222,9 @@ void Manager::load() {
     std::wcout << L"Database MemoryRead" << std::endl;
     std::wcout << std::endl;
 }
+
+void Manager::close() {
+    if (std::remove("db/main.json") == 0) {
+        print(L"Database closed", L"white", L"bold", L"blue");
+    }
+}
