@@ -1,16 +1,16 @@
 ﻿#include "Manager.h"
 #include "readsecret.h"
+#include "formatkit.h"
+#include "Crypt.h"
+#include "livecmd/alert.h"
+#include "utils.h"
+#include "json.hpp"
 
 #include <sys/stat.h>  // для mkdir (создание папки)
 #include <direct.h>    // для _mkdir на Windows
 #include <fstream>
 #include <filesystem>
 #include <functional>
-#include <codecvt>
-#include "json.hpp"
-#include "formatkit.h"
-#include "Crypt.h"
-#include "livecmd/alert.h"
 
 using json = nlohmann::json;
 
@@ -25,28 +25,6 @@ void Manager::init() {
         alert::db::found();
         load();
     }
-}
-// ---------- утилиты конверсии ----------
-static inline std::string wstring_to_utf8(const std::wstring& wstr) {
-    std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
-    return conv.to_bytes(wstr);
-}
-
-static inline std::wstring utf8_to_wstring(const std::string& str) {
-    std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
-    return conv.from_bytes(str);
-}
-
-// --- wstring → string ---
-std::string wstring_to_string(const std::wstring& wstr) {
-    std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
-    return conv.to_bytes(wstr);
-}
-
-// --- string → wstring ---
-std::wstring string_to_wstring(const std::string& str) {
-    std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
-    return conv.from_bytes(str);
 }
 
 // ---------- сохранение ----------

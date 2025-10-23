@@ -23,6 +23,6 @@ add_executable(Nightlock
     src/livecmd.cpp
     src/Manager.cpp
     src/split.cpp
-   "src/Crypt.cpp" "include/Crypt.h" "include/readsecret.h" "src/readsecret.cpp"  "include/init.h" "src/init.cpp" "include/livecmd/alert.h" "src/livecmd/alert.cpp")
+   "src/Crypt.cpp" "include/Crypt.h" "include/readsecret.h" "src/readsecret.cpp"  "include/init.h" "src/init.cpp" "include/livecmd/alert.h" "src/livecmd/alert.cpp" "include/utils.h" "src/utils.cpp")
 
 target_link_libraries(Nightlock PRIVATE OpenSSL::SSL OpenSSL::Crypto)
