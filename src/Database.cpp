@@ -16,7 +16,7 @@ void Manager::init() {
     std::ifstream file("db/primary.nightlock");
 
     if (!file.good()) {
-        print(L"[   ERROR   ]", L"red", L"bold");
+        print(L"[  FAIL  ]", L"red", L"bold");
         std::wcout << L" -> ";
         std::wcout << L"No Database Found, Initializating..." << std::endl;
         std::wcout << std::endl;
@@ -119,7 +119,8 @@ void Manager::save() {
     file << j.dump(4);
     file.close();
 
-    std::wcout << L"Enter master-password > ";
+    print(L"[DATABASE]", L"bright_cyan", L"bold");
+    print(L" -> Create master-password > ", L"white", L"bold");
     std::string mpsswd;
     std::wstring passwd = readsecret();
     encrypt_file("db/primary.nightlock1", "db/primary.nightlock", mpsswd);
@@ -130,7 +131,8 @@ void Manager::save() {
 
 // ---------- загрузка ----------
 void Manager::load() {
-    std::wcout << L"Enter master-password > ";
+    print(L"[DATABASE]", L"bright_cyan", L"bold");
+    print(L" -> Enter master-password > ", L"white", L"bold");
     std::string mpsswd;
     std::wstring passwd = readsecret();
     decrypt_file("db/primary.nightlock", "db/primary.nightlock1", mpsswd);
