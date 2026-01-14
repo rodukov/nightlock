@@ -6,7 +6,15 @@
 
 <img src="docs/scheme.svg">
 
-<h3>2. Описание модулей программы</h3>
+
+<h3>2. Демонстрация работы программы</h3>
+
+<p align="center"><img src="docs/d4.jpg" style="width: 400px"></p>
+<p align="center"><img src="docs/d3.jpg" style="width: 400px" ></p>
+<p align="center"><img src="docs/d1.jpg" style="width: 400px"></p>
+<p align="center"><img src="docs/d2.jpg" style="width: 150px"></p>
+
+<h3>3. Описание модулей программы</h3>
 
 | Название | Описание |
 |:--------- |:----------|
@@ -23,4 +31,6 @@
 | `src/split.cpp`   | Разбить строку на слова |
 | `src/utils.cpp`   | Wstring, string, json |
 
+<h3>4. Блок-схема работы программы</h3>
 
+<p align="center"><img src="docs/blockscheme.jpg" style="width: 100%"></p>
