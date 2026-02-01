@@ -9,6 +9,7 @@ ApplicationWindow {
     visible: true
     title: "Nightlock Bluet"
     readonly property int leftPanelWidth: 300
+    readonly property int workspaceDefaultWidth: 300
 
     Rectangle {
         id: background
@@ -44,16 +45,9 @@ ApplicationWindow {
 
 
 
-
-
-
-
-
-
-
-
     Rectangle {
         id: primary
+        // width: 300
         anchors {
             left: background.right
             right: parent.right
@@ -64,7 +58,7 @@ ApplicationWindow {
         // Левая граница
         Rectangle {
             id: leftBorder
-            width: 3
+            width: 1
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             anchors.left: parent.left
@@ -108,58 +102,87 @@ ApplicationWindow {
 
 
             Column {
+
+                // width: 300
+
                 id: contentColumn
                 anchors.margins: 5
                 width: scroll.availableWidth
-                spacing: 2
+                spacing: 5 // отсуп между блоками
                 height: childrenRect.height   // вместо read-only implicitHeight
 
                 Repeater {
-                    model: 10
+                    model: 100
                     delegate: Rectangle {
 
                         width: contentColumn.width
-                        height: 60  // чуть больше, чтобы уместить внутренние элементы
-                        color: "red"
+                        // width: 300  // фиксированная ширина
+                        // anchors.horizontalCenter: parent.horizontalCenter
+                        height: 53  // чуть больше, чтобы уместить внутренние элементы
+                        // color: "red" // DEBUG COLOR
                         radius: 4
+                        // боковые отступы
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.leftMargin: 10
+                        anchors.rightMargin: 10
+                        anchors.topMargin: 5
+                        anchors.bottomMargin: 5
+
+                        // полоски
+                        Rectangle {
+                            anchors { left: parent.left; right: parent.right; bottom: parent.bottom }
+                            height: 1
+                            color: "#E1E1E1"
+                        }
 
                         Row {
                             anchors.fill: parent
-                            anchors.margins: 5
-                            spacing: 5
+                            anchors.margins: 7.5 // отсуп красного
+                            spacing: 5 // отсуп текстов от логотипа
 
                             // Левая квадратичная иконка
                             Rectangle {
-                                width: 50
-                                height: 50
-                                color: "green"
+                                width: 37
+                                height: 37
+                                color: "black"
                                 radius: 10
                             }
 
                             Column {
-                                spacing: 5
+                                spacing: 4
 
                                 Rectangle {
-                                    color: "green"
-                                    width: 350
-                                    height: 20
+                                    // color: "green"
+                                    width: 150
+                                    height: 15
 
                                     Text {
-                                        anchors.centerIn: parent
-                                        text: "BSUIR IIS"
-                                        color: "white"
+                                        anchors.fill: parent   // текст занимает весь Rectangle
+                                        text: "IIS BSUIR"
+                                        color: "black"
+                                        horizontalAlignment: Text.AlignLeft   // выравнивание по левому краю
+                                        verticalAlignment: Text.AlignVCenter // по вертикали по центру
+                                        leftPadding: 10
+                                        font.pixelSize: 14
+                                        font.bold: true
                                     }
                                 }
 
                                 Rectangle {
-                                    color: "blue"
-                                    width: 350
-                                    height: 20
+                                    // color: "blue"
+                                    width: 150
+                                    height: 15
 
                                     Text {
-                                        anchors.centerIn: parent
-                                        text: "BSUIR SEO"
-                                        color: "white"
+                                        anchors.fill: parent   // текст занимает весь Rectangle
+                                        text: "rodukov138@icloud.com"
+                                        color: "#767676"
+                                        horizontalAlignment: Text.AlignLeft   // выравнивание по левому краю
+                                        verticalAlignment: Text.AlignVCenter // по вертикали по центру
+                                        leftPadding: 10
+                                        font.pixelSize: 12
+
                                     }
                                 }
                             }
