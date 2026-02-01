@@ -7,6 +7,11 @@ Item {
     Rectangle {
         id: primary
         width: workspaceDefaultWidth
+        anchors {
+            left: background.right
+            top: parent.top
+            bottom: parent.bottom
+        }
 
         // Левая граница
         Rectangle {
@@ -157,10 +162,6 @@ Item {
                         }
                     }
                 }
-
-
-
-
             }
         }
     }

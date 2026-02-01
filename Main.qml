@@ -8,8 +8,11 @@ ApplicationWindow {
     height: 600
     visible: true
     title: "Nightlock Bluet"
+
     readonly property int leftPanelWidth: 220
     readonly property int workspaceDefaultWidth: 300
+
+    color: blue; // WARNING
 
     Rectangle {
         id: background
@@ -44,185 +47,150 @@ ApplicationWindow {
     }
 
 
+Scroll {
+    readonly property int workspaceDefaultWidth: 300
+    id: primaryscroll
+    width: workspaceDefaultWidth
+    anchors {
+        left: background.right
+        top: parent.top
+        bottom: parent.bottom
+    }
+}
+
+
+
+
+
+Rectangle {
+    anchors {
+        top: parent.top
+        left: primaryscroll.right
+        right: parent.right
+    }
+    anchors.margins: 18
+    // color: "red"
+    color: "#FBFBFB"
+    radius: 10
+
+    height: contentColumn.implicitHeight + 35
+
+
+    border.width: 1
+    border.color: "#EFEFEF"
 
     Rectangle {
-        id: primary
-        width: workspaceDefaultWidth
-        anchors {
-            left: background.right
-            top: parent.top
-            bottom: parent.bottom
-        }
 
-        // Левая граница
-        Rectangle {
-            id: leftBorder
-            width: 1
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            anchors.left: parent.left
-            color: "#E1E1E1"
-        }
+        anchors.fill: parent
+        anchors.leftMargin: 1
+        anchors.rightMargin: 1
+        anchors.topMargin: 12
+        anchors.bottomMargin: 12
+        // color: "green"
+        color: "transparent"
 
+        Column {
+            id: contentColumn
+            width: parent.width
+            spacing: 6
 
-        // Правая граница
-        Rectangle {
-            id: rightBorder
-            width: 1
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            anchors.left: parent.right
-            color: "#E1E1E1"
-        }
-
-
-        ScrollView {
-            id: scroll
-            width: workspaceDefaultWidth
-            anchors {
-                top: primary.top
-                bottom: primary.bottom
-                left: leftBorder.right   // scroll начинается сразу после границы
-                right: primary.right
-            }
-            clip: true
-
-            // Overlay ScrollBar
-            ScrollBar.vertical: ScrollBar {
-                id: vbar
-                parent: scroll
-                anchors.right: scroll.right
-                anchors.top: scroll.top
-                anchors.bottom: scroll.bottom
-
-                width: 6
-                interactive: true
-                policy: ScrollBar.AsNeeded
-                opacity: (vbar.active || vbar.pressed) ? 0.6 : 0.0
-
-                Behavior on opacity {
-                    NumberAnimation { duration: 150 }
-                }
-
-                contentItem: Rectangle {
-                    radius: 3
-                    color: "black"
-                }
-
-                background: null
+            // Квадрат по центру
+            Rectangle {
+                width: 64
+                height: 64
+                color: "black"
+                radius: 10
+                anchors.horizontalCenter: parent.horizontalCenter
             }
 
+            // Подпись по центру
+            Text {
+                text: "Binance"
+                font.bold: true
+                font.pixelSize: 18
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
 
+            // Группа пользователь + пароль без spacing
             Column {
+                width: parent.width
+                spacing: 0  // вот тут убрали spacing между блоками
 
-                // width: 300
-
-                id: contentColumn
-                anchors.margins: 5
-                width: workspaceDefaultWidth
-                // width: scroll.availableWidth
-                spacing: 5 // отсуп между блоками
-                height: childrenRect.height   // вместо read-only implicitHeight
-
-                Repeater {
-                    model: 100
-                    delegate: Rectangle {
-
-                        width: contentColumn.width
-                        // width: 300  // фиксированная ширина
-                        // anchors.horizontalCenter: parent.horizontalCenter
-                        height: 53  // чуть больше, чтобы уместить внутренние элементы
-                        // color: "red" // DEBUG COLOR
-                        radius: 4
-                        // боковые отступы
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                        anchors.leftMargin: 10
-                        anchors.rightMargin: 10
-                        anchors.topMargin: 5
-                        anchors.bottomMargin: 5
-
-                        // полоски
-                        Rectangle {
-                            anchors { left: parent.left; right: parent.right; bottom: parent.bottom }
-                            height: 1
-                            color: "#E1E1E1"
+                Rectangle {
+                    width: parent.width
+                    height: 32
+                    // color: "purple"
+                    color: "transparent"
+                    // полоска под блоком
+                    Rectangle {
+                        width: parent.width
+                        height: 1
+                        color: "#EFEFEF"
+                        anchors.bottom: parent.bottom
+                    }
+                    Text {
+                        text: "Имя пользователя"
+                        font.pixelSize: 16
+                        anchors {
+                            left: parent.left
+                            leftMargin: 8
+                            verticalCenter: parent.verticalCenter
                         }
+                    }
 
-                        Row {
-                            anchors.fill: parent
-                            anchors.margins: 7.5 // отсуп красного
-                            spacing: 5 // отсуп текстов от логотипа
-
-                            // Левая квадратичная иконка
-                            Rectangle {
-                                width: 37
-                                height: 37
-                                color: "black"
-                                radius: 10
-                            }
-
-                            Column {
-                                spacing: 4
-
-                                Rectangle {
-                                    // color: "green"
-                                    width: 150
-                                    height: 15
-
-                                    Text {
-                                        anchors.fill: parent   // текст занимает весь Rectangle
-                                        text: "IIS BSUIR"
-                                        color: "black"
-                                        horizontalAlignment: Text.AlignLeft   // выравнивание по левому краю
-                                        verticalAlignment: Text.AlignVCenter // по вертикали по центру
-                                        leftPadding: 10
-                                        font.pixelSize: 14
-                                        font.bold: true
-                                    }
-                                }
-
-                                Rectangle {
-                                    // color: "blue"
-                                    width: 150
-                                    height: 15
-
-                                    Text {
-                                        anchors.fill: parent   // текст занимает весь Rectangle
-                                        text: "rodukov138@icloud.com"
-                                        color: "#767676"
-                                        horizontalAlignment: Text.AlignLeft   // выравнивание по левому краю
-                                        verticalAlignment: Text.AlignVCenter // по вертикали по центру
-                                        leftPadding: 10
-                                        font.pixelSize: 12
-
-                                    }
-                                }
-                            }
-
+                    Text {
+                        text: "test@example.com"
+                        color: "#A1A1A1"
+                        font.pixelSize: 16
+                        anchors {
+                            right: parent.right
+                            rightMargin: 8
+                            verticalCenter: parent.verticalCenter
                         }
                     }
                 }
 
+                Rectangle {
+                    width: parent.width
+                    height: 32
+                    // color: "purple"
+                    color: "transparent"
 
+                    // полоска под блоком
+                    Rectangle {
+                        width: parent.width
+                        height: 1
+                        color: "#EFEFEF"
+                        anchors.bottom: parent.bottom
 
+                    }
 
+                    Text {
+                        text: "Пароль"
+                        font.pixelSize: 16
+                        anchors {
+                            left: parent.left
+                            leftMargin: 8
+                            verticalCenter: parent.verticalCenter
+                        }
+                    }
+
+                    Text {
+                        text: "*******"
+                        color: "#A1A1A1"
+                        font.pixelSize: 16
+                        anchors {
+                            right: parent.right
+                            rightMargin: 8
+                            verticalCenter: parent.verticalCenter
+                        }
+                    }
+
+                }
             }
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
 
 
 
