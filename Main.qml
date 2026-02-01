@@ -8,7 +8,7 @@ ApplicationWindow {
     height: 600
     visible: true
     title: "Nightlock Bluet"
-    readonly property int leftPanelWidth: 300
+    readonly property int leftPanelWidth: 220
     readonly property int workspaceDefaultWidth: 300
 
     Rectangle {
@@ -47,10 +47,9 @@ ApplicationWindow {
 
     Rectangle {
         id: primary
-        // width: 300
+        width: workspaceDefaultWidth
         anchors {
             left: background.right
-            right: parent.right
             top: parent.top
             bottom: parent.bottom
         }
@@ -65,13 +64,26 @@ ApplicationWindow {
             color: "#E1E1E1"
         }
 
+
+        // Правая граница
+        Rectangle {
+            id: rightBorder
+            width: 1
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.left: parent.right
+            color: "#E1E1E1"
+        }
+
+
         ScrollView {
             id: scroll
+            width: workspaceDefaultWidth
             anchors {
-                top: parent.top
-                bottom: parent.bottom
+                top: primary.top
+                bottom: primary.bottom
                 left: leftBorder.right   // scroll начинается сразу после границы
-                right: parent.right
+                right: primary.right
             }
             clip: true
 
@@ -107,7 +119,8 @@ ApplicationWindow {
 
                 id: contentColumn
                 anchors.margins: 5
-                width: scroll.availableWidth
+                width: workspaceDefaultWidth
+                // width: scroll.availableWidth
                 spacing: 5 // отсуп между блоками
                 height: childrenRect.height   // вместо read-only implicitHeight
 
