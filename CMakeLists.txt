@@ -16,6 +16,8 @@ qt_add_qml_module(appnightlock
     URI nightlock
     QML_FILES
         Main.qml
+        QML_FILES Tree.qml
+        QML_FILES Scroll.qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
