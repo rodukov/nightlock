@@ -9,3 +9,17 @@ build/
 .qt/
 .idea/
 .DS_Store
+
+
+.rcc
+appnightlock_autogen/
+CMakeFiles
+gui/nightlock/
+gui/meta_types/
+gui/qmltypes/
+gui/Makefile
+gui/CMakeCache.txt
+Gui/cmake_install.cmake
+Gui/nightlock.app/
+Gui/appnightlock.app/
+Gui/appnightlock_qmltyperegistrations.cpp
