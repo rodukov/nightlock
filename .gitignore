@@ -8,3 +8,4 @@ build/
 .qtcreator/
 .qt/
 .idea/
+.DS_Store
