@@ -1,0 +1,13 @@
+rm -rf .qt
+rm -rf .rcc
+rm -rf appnightlock_autogen/
+rm -rf CMakeFiles
+rm -rf nightlock/
+rm -rf meta_types/
+rm -rf qmltypes/
+rm -rf Makefile
+rm -rf CMakeCache.txt
+rm -rf cmake_install.cmake
+rm -rf nightlock.app/
+rm -rf appnightlock.app/
+rm -rf appnightlock_qmltyperegistrations.cpp
